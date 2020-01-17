@@ -314,15 +314,17 @@ class HTMLTodoListView implements TodoListView {
     }
 
     clearInput(): void {
-        // TODO
+        this.todoInput.value = '';
     }
 
     getFilter(): string {
-        // TODO
+        return this.todoListFilter.value.toUpperCase();
     }
 
     getInput(): TodoItem {
-        // TODO
+        const todoInputValue: string = this.todoInput.value.trim();
+        const retVal: TodoItem = new TodoItem(todoInputValue);
+        return retVal;
     }
 
     render(todoList: ReadonlyArray<TodoItem>): void {
@@ -332,4 +334,21 @@ class HTMLTodoListView implements TodoListView {
     filter(): void {
         // TODO
     }
+}
+
+render(todoList: ReadonlyArray<TodoItem>): void {
+    console.log("Updating the rendered todo list");
+    this.todoListDiv.innerHTML = '';
+    this.todoListDiv.textContent = '';
+
+    const ul = document.createElement('ul');
+    URL.setAttribute('id', 'todoList');
+    this.todoListDiv.appendChild(ul);
+
+    TodoList.forEach(item => {
+        const li = document.createElement('li');
+        li.setAttribute('class', 'todo-list-item');
+        li.innerHTML = `<a href='#' onclick='todoIt.removeTodo("${item.identifier}")'>${item.description}</a>`;
+        ul.appendChild(li);
+    });
 }
