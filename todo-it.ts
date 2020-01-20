@@ -138,3 +138,44 @@ interface TodoListController {
     filterTodoList(): void;
     removeTodo(identifier: string): void;
 }
+
+class TodoIt implements TodoListController {
+    private readonly _todoList: TodoList = new TodoList();
+
+    constructor(private _todoListView: TodoListView) {
+        console.log("TodoIt");
+
+        if(!_todoListView) {
+            throw new Error("The todo list view implementation is required to properly initialize TodoIt!");
+        }
+    }
+
+    addTodo(): void {
+        // get the value from the view
+        const newTodo = this._todoListView.getInput();
+
+        // verify that there is something to add
+        if ('' !== newTodo.description) {
+            console.log("Adding todo: ", newTodo);
+
+            // add the new item to the list (i.e., update the model)
+            this._todoList.addTodo(newTodo);
+            console.log("New todo list: ", this._todoList.todoList);
+
+            // clear the input
+            this._todoListView.render(this._todoList.todoList);
+
+            // filter the list if needed
+            this.filterTodoList();
+        }
+    }
+
+    filterTodoList(): void {
+        // TODO
+    }
+
+    removeTodo(identifier: string): void {
+        // TODO
+    }
+}
+
