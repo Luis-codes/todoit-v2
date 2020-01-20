@@ -132,3 +132,9 @@ filter(): void {
         }
     });
 }
+
+interface TodoListController {
+    addTodo(): void;
+    filterTodoList(): void;
+    removeTodo(identifier: string): void;
+}
