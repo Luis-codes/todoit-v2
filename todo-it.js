@@ -37,6 +37,7 @@ var TodoList = /** @class */ (function () {
 }());
 var HTMLTodoListView = /** @class */ (function () {
     function HTMLTodoListView() {
+        this.view = new HTMLTodoListView();
         this.todoInput = document.getElementById('todoInput');
         this.todoListDiv = document.getElementById('todoListContainer');
         this.todoListFilter = document.getElementById('todoFilter');
@@ -105,3 +106,41 @@ todoListHtml.childNodes.forEach(function (item) {
         }
     }
 });
+var TodoIt = /** @class */ (function () {
+    function TodoIt(_todoListView) {
+        this._todoListView = _todoListView;
+        this._todoList = new TodoList();
+        this.todoIt = new TodoIt(view);
+        console.log("TodoIt");
+        if (!_todoListView) {
+            throw new Error("The todo list view implementation is required to properly initialize TodoIt!");
+        }
+    }
+    TodoIt.prototype.addTodo = function () {
+        // get the value from the view
+        var newTodo = this._todoListView.getInput();
+        // verify that there is something to add
+        if ('' !== newTodo.description) {
+            console.log("Adding todo: ", newTodo);
+            // add the new item to the list (i.e., update the model)
+            this._todoList.addTodo(newTodo);
+            console.log("New todo list: ", this._todoList.todoList);
+            // clear the input
+            this._todoListView.render(this._todoList.todoList);
+            // filter the list if needed
+            this.filterTodoList();
+        }
+    };
+    TodoIt.prototype.filterTodoList = function () {
+        this._todoListView.filter();
+    };
+    TodoIt.prototype.removeTodo = function (identifier) {
+        if (identifier) {
+            console.log("item to remove: ", identifier);
+            this._todoList.removeTodo(identifier);
+            this._todoListView.render(this._todoList.todoList);
+            this._filterTodoList();
+        }
+    };
+    return TodoIt;
+}());

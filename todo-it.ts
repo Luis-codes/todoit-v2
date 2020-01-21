@@ -46,6 +46,7 @@ class HTMLTodoListView implements TodoListView {
     private readonly todoInput: HTMLInputElement;
     private readonly todoListDiv: HTMLDivElement;
     private readonly todoListFilter: HTMLInputElement;
+    const view = new HTMLTodoListView();
 
     constructor() {
         this.todoInput = document.getElementById('todoInput') as
@@ -141,6 +142,7 @@ interface TodoListController {
 
 class TodoIt implements TodoListController {
     private readonly _todoList: TodoList = new TodoList();
+    const todoIt = new TodoIt(view);
 
     constructor(private _todoListView: TodoListView) {
         console.log("TodoIt");
@@ -171,11 +173,16 @@ class TodoIt implements TodoListController {
     }
 
     filterTodoList(): void {
-        // TODO
+        this._todoListView.filter();
     }
 
     removeTodo(identifier: string): void {
-        // TODO
+        if(identifier) {
+            console.log("item to remove: ", identifier);
+            this._todoList.removeTodo(identifier);
+            this._todoListView.render(this._todoList.todoList);
+            this._filterTodoList();
+        }
     }
 }
 
